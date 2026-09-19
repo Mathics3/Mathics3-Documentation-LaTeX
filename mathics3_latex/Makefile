@@ -22,7 +22,7 @@ ASY_PDF_FILES := $(ASY_FILES:.asy=.pdf)
 	asy -f pdf $<
 
 # Location of Python Pickle file containing doctest tests and test results formatted for LaTeX
-nnDOCTEST_LATEX_DATA_PCL ?= $(HOME)/.local/var/Mathics3/doctest_latex_data.pcl
+DOCTEST_LATEX_DATA_PCL ?= $(HOME)/.local/var/Mathics3/doctest_latex_data.pcl
 
 # Variable indicating Mathics3 Modules you have available on your system, in latex2doc option format
 MATHICS3_MODULE_OPTION ?=--load-module pymathics.graph,pymathics.natlang
@@ -31,7 +31,7 @@ MATHICS3_MODULE_OPTION ?=--load-module pymathics.graph,pymathics.natlang
 all doc texdoc: mathics3.pdf
 
 $(DOCTEST_LATEX_DATA_PCL):
-	$(MAKE) -C ../../.. latex-doctest-data
+	$(MAKE) latex-doctest-data
 
 #: Create LaTeX doctest test data and test results that is used to build LaTeX PDF
 # For LaTeX docs we assume Unicode
@@ -74,11 +74,11 @@ static-images/logo-heptatom-Mathics3.pdf:
 	(cd .. && $(BASH) ./make-static-images.sh)
 
 #: The build of the documentation which is derived from docstrings in the Python code and doctest data
-documentation.tex: $(DOCTEST_LATEX_DATA_PCL) ../documentation/1-Manual.mdoc
+documentation.tex: $(DOCTEST_LATEX_DATA_PCL) ../documentation-src/1-Manual.mdoc
 	$(PYTHON) ./doc2latex.py $(MATHICS3_MODULE_OPTION) && $(BASH) ./sed-hack.sh
 
-#: Same as mathics.pdf
-pdf latex: mathics.pdf
+#: Same as mathics3.pdf
+pdf latex: mathics3.pdf
 
 #: Remove all auto-generated files
 clean:

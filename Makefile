@@ -110,7 +110,7 @@ doctest-x:
 
 #: Make Mathics3 PDF manual via Asymptote and LaTeX
 latexdoc texdoc doc:
-	(cd mathics/doc/latex && $(MAKE) doc)
+	$(MAKE) -C mathics3_latex doc
 
 #: Remove ChangeLog
 rmChangeLog:

@@ -89,10 +89,14 @@ include = ["mathics*"]
     "mimetypes.xml",
 ]
 
+[project.optional-dependencies]
+full = [
+    "Mathics3-Module-PyICU",
+    "Mathics3-Module-networkx",
+    "Mathics3-Module-nltk",
+]
+
 [tool.setuptools.dynamic]
 version = {attr = "mathics.version.__version__"}
 
-[[tool.mypy.overrides]]
-module = ["mpmath", "llvmlite.*", "trepan.*", "mathics.benchmark",
-          "mathics.builtin.*", "mathics.eval.*", "test.*"]
 ignore_errors = true

@@ -20,7 +20,7 @@ import os.path as osp
 import subprocess
 import sys
 from argparse import ArgumentParser
-from typing import Dict, Optional
+from typing import Final, Optional
 
 from mpmath import __version__ as mpmathVersion
 from numpy import __version__ as NumPyVersion
@@ -35,6 +35,10 @@ from mathics.doc.latex_doc import LaTeXMathicsDocumentation
 from mathics.doc.utils import load_doctest_data, open_ensure_dir
 from mathics.eval.pymathics import PyMathicsLoadException, eval_LoadModule
 
+def get_srcdir():
+    filename = osp.normcase(osp.dirname(osp.abspath(__file__)))
+    return osp.realpath(filename)
+
 # Global variables
 logfile = None
 
@@ -44,14 +48,15 @@ logfile = None
 # This information is stitched in with information comes from
 # docstrings that are loaded from load Mathics3 builtins and external modules.
 
-DOCTEST_LATEX_DATA_PCL = settings.DOCTEST_LATEX_DATA_PCL
+DOCTEST_LATEX_DATA_PCL: Final[str] = settings.DOCTEST_LATEX_DATA_PCL
+MATHICS3_LATEX_DIR: Final[str] = get_srcdir()
 
 # Output location information
-DOC_LATEX_DIR = os.environ.get("DOC_LATEX_DIR", settings.DOC_LATEX_DIR)
-DOC_LATEX_FILE = os.environ.get("DOC_LATEX_FILE", settings.DOC_LATEX_FILE)
+DOC_LATEX_DIR = os.environ.get("DOC_LATEX_DIR", MATHICS3_LATEX_DIR)
+DOC_LATEX_FILE = os.environ.get("DOC_LATEX_FILE", osp.join(DOC_LATEX_DIR, "documentation.tex"))
 
 
-def read_doctest_data(quiet=False) -> Optional[Dict[tuple, dict]]:
+def read_doctest_data(quiet=False) -> Optional[dict[tuple, dict]]:
     """
     Read doctest information from PCL file and return this.
     This is a wrapper around laod_doctest_data().
