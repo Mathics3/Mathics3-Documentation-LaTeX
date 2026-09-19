@@ -18,27 +18,18 @@ MATHICS3_MODULE_OPTION ?= --load-module pymathics.graph,pymathics.natlang
 .PHONY: \
    all \
    ChangeLog-without-corrections \
-   benchmarks \
    build \
    check \
-   check-builtin-manifest \
-   check-consistency-and-style \
    check-full \
    clean \
    clean-cache \
-   clean-cython \
    develop \
    develop-full \
-   develop-full-cython \
    dist \
    doc \
    doctest \
    doctest-data \
-   djangotest \
-   gstest \
    latexdoc \
-   mypy \
-   plot-detailed-tests\
    pytest \
    pytest-x \
    rmChangeLog \
@@ -57,24 +48,6 @@ endif
 
 #: Default target - same as "develop"
 all: develop
-
-# run pytest benchmarks
-benchmarks:
-	BENCHMARKS=True $(PYTHON) -m pytest $(PYTEST_OPTIONS) --benchmark-json=output.json test/timings/test_regressions.py
-        # Normalize the stats for ops to the reference.
-	$(PYTHON) admin-tools/normalize_benchmarks.py output.json
-	$(PYTHON) admin-tools/check_benchmarks.py --threshold 200 output.json
-
-# run pytest benchmarks
-full-benchmarks:
-	BENCHMARKS=True $(PYTHON) -m pytest $(PYTEST_OPTIONS) --benchmark-json=output-full.json test/timings
-        # Normalize the stats for ops to the reference.
-	$(PYTHON) admin-tools/normalize_benchmarks.py output-full.json
-	$(PYTHON) admin-tools/check_benchmarks.py --threshold 200 output-full.json
-
-#: build everything needed to install
-build:
-	$(PYTHON) ./setup.py build
 
 # Note that we need ./setup.py develop
 # because pip install doesn't handle
@@ -98,33 +71,7 @@ develop-full-cython:
 dist:
 	./admin-tools/make-dist.sh
 
-#: Install Mathics
-install:
-	$(PYTHON) setup.py install
-
-#: Run the most extensive set of tests
-check: pytest gstest doctest
-
-#: Run the most extensive set of tests, stopping on first error
-check-x: pytest-x gstest doctest-x plot-detailed-tests
-
-#: Run the most extensive set of tests
-check-for-Windows: pytest-for-windows gstest doctest
-
-#: Build and check manifest of Builtins
-check-builtin-manifest:
-	$(PYTHON) admin-tools/build_and_check_manifest.py
-
-#: Run pytest consistency and style checks
-check-consistency-and-style:
-	MATHICS_LINT=t $(PYTHON) -m pytest $(PYTEST_OPTIONS) test/consistency-and-style
-
 check-full: check-builtin-manifest check-builtin-manifest check plot-detailed-tests
-
-#: Remove Cython-derived files
-clean-cython:
-	find mathics -name "*.so" -type f -delete; \
-	find mathics -name "*.c" -type f -delete
 
 #: Remove Python cache files
 clean-cache:
@@ -140,12 +87,6 @@ clean: clean-cython clean-cache
 	rm -f mathics/data/*.json || true; \
 	rm -rf build || true
 
-mypy:
-	mypy --install-types --ignore-missing-imports --non-interactive mathics
-
-plot-detailed-tests:
-	MATHICS_PLOT_DETAILED_TESTS="1" $(PYTHON) -m pytest -x $(PYTEST_OPTIONS) test/builtin/drawing/test_plot_detail.py
-
 #: Run pytest tests. Use environment variable "PYTEST_OPTIONS" for pytest options
 pytest:
 	$(PYTHON) -m pytest $(PYTEST_OPTIONS) $(PYTEST_WORKERS) test
@@ -153,11 +94,6 @@ pytest:
 #: Run pytest tests stopping at first failure.
 pytest-x :
 	PYTEST_OPTIONS="-x" $(MAKE) pytest
-
-#: Run a more extensive pattern-matching test
-gstest:
-	(cd examples/symbolic_logic/gries_schneider && $(PYTHON) test_gs.py)
-
 
 #: Create LaTeX doctest test data and test results that is used to build LaTeX PDF
 # For LaTeX docs we assume Unicode
