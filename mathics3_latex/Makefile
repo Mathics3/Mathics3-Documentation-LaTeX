@@ -1,4 +1,8 @@
-.PHONY: all clean doc doc-data latex pdf texdoc mathics-xetex.pdf mathics-asy-pdf
+.PHONY: \
+   all clean doc doc-data \
+   latex latex-doctest_data \
+   mathics-asy-pdf mathics-xetex.pdf \
+   pdf texdoc
 
 PYTHON ?= python
 XETEX ?= xelatex
@@ -18,7 +22,7 @@ ASY_PDF_FILES := $(ASY_FILES:.asy=.pdf)
 	asy -f pdf $<
 
 # Location of Python Pickle file containing doctest tests and test results formatted for LaTeX
-DOCTEST_LATEX_DATA_PCL ?= $(HOME)/.local/var/Mathics3/doctest_latex_data.pcl
+nnDOCTEST_LATEX_DATA_PCL ?= $(HOME)/.local/var/Mathics3/doctest_latex_data.pcl
 
 # Variable indicating Mathics3 Modules you have available on your system, in latex2doc option format
 MATHICS3_MODULE_OPTION ?=--load-module pymathics.graph,pymathics.natlang
@@ -32,7 +36,7 @@ $(DOCTEST_LATEX_DATA_PCL):
 #: Create LaTeX doctest test data and test results that is used to build LaTeX PDF
 # For LaTeX docs we assume Unicode
 latex-doctest-data:
-	MATHICS_CHARACTER_ENCODING="UTF-8" $(PYTHON) ../../gather_latex_doc.py --output $(MATHICS3_MODULE_OPTION) --doc-only
+	MATHICS_CHARACTER_ENCODING="UTF-8" $(PYTHON) gather_latex_doc.py --output $(MATHICS3_MODULE_OPTION) --doc-only
 
 mathics3-title.pdf:
 	cp mathics3-title.pdf-src mathics3-title.pdf
