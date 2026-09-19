@@ -3,14 +3,14 @@ requires = [
     # setuptools and wheel are needed for pip install --no-build-isolation
     # --no-build-isoolation is used when the API breaks and we need to
     # build from a GitHub repository
-    "Mathics3>=10.1",
+    "Mathics3>=10.0.1",
 ]
 build-backend = "setuptools.build_meta"
 
 [project]
 description = "Mathics3 LaTeX document generation."
 dependencies = [
-    "Mathics3>=10.1",
+    "Mathics3>=10.0.1",
 ]
 license = "GPL-3.0-or-later"
 name = "Mathics3-LaTeX-Documentation"
@@ -97,6 +97,4 @@ full = [
 ]
 
 [tool.setuptools.dynamic]
-version = {attr = "mathics.version.__version__"}
-
-ignore_errors = true
+version = {attr = "mathics3_latex.version.__version__"}

@@ -8,6 +8,7 @@ that produces the Mathics3 PDF.
    Mathics3 built-in functions
 2. Creates/updates internal documentation data
 """
+
 import sys
 
 from mathics.core.load_builtin import import_and_load_builtins
@@ -18,19 +19,21 @@ from mathics.docpipeline import (
     test_chapters,
     test_sections,
 )
-from mathics.settings import get_doctest_latex_data_path
 
+# Global variables
+logfile = None
+
+# Input doctest PCL FILE. This contains just the
+# tests and test results.
+#
+# This information is stitched in with information comes from
+# docstrings that are loaded from load Mathics3 builtins and external modules.
 
 def main():
     args = build_arg_parser()
-    data_path = (
-        get_doctest_latex_data_path(should_be_readable=False, create_parent=True)
-        if args.output
-        else None
-    )
 
     test_pipeline = DocTestPipeline(
-        args, output_format="latex", data_path=data_path, doc_only=args.doc_only
+        args, output_format="latex",
     )
     test_status = test_pipeline.status
 

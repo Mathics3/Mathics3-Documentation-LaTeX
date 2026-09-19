@@ -36,7 +36,7 @@ $(DOCTEST_LATEX_DATA_PCL):
 #: Create LaTeX doctest test data and test results that is used to build LaTeX PDF
 # For LaTeX docs we assume Unicode
 latex-doctest-data:
-	MATHICS_CHARACTER_ENCODING="UTF-8" $(PYTHON) gather_latex_doc.py --output $(MATHICS3_MODULE_OPTION) --doc-only
+	MATHICS_CHARACTER_ENCODING="UTF-8" $(PYTHON) gather_latex_doc.py --output $(MATHICS3_MODULE_OPTION)
 
 mathics3-title.pdf:
 	cp mathics3-title.pdf-src mathics3-title.pdf

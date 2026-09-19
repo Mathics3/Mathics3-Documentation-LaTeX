@@ -20,7 +20,6 @@ MATHICS3_MODULE_OPTION ?= --load-module pymathics.graph,pymathics.natlang
    ChangeLog-without-corrections \
    build \
    check \
-   check-full \
    clean \
    clean-cache \
    develop \
@@ -61,30 +60,15 @@ develop:
 develop-full:
 	$(PIP) install --no-build-isolation -e .[dev,full]
 
-# See note above on ./setup.py
-#: Set up to run from the source tree with full dependencies and Cython
-develop-full-cython:
-	$(PIP) install --no-build-isolation -e .[dev,full,cython]
-
-
 #: Make distribution: wheels, eggs, tarball
 dist:
 	./admin-tools/make-dist.sh
 
-check-full: check-builtin-manifest check-builtin-manifest check plot-detailed-tests
-
-#: Remove Python cache files
-clean-cache:
-	find mathics -name *.py[co] -type f -delete; \
-	find mathics -name __pycache__ -type d -delete || true
-
 #: Remove derived files
-clean: clean-cython clean-cache
-	for dir in mathics/doc ; do \
+clean:
+	for dir in mathics3_latex ; do \
 	   ($(MAKE) -C "$$dir" clean); \
 	done; \
-	rm -f factorials || true; \
-	rm -f mathics/data/*.json || true; \
 	rm -rf build || true
 
 #: Run pytest tests. Use environment variable "PYTEST_OPTIONS" for pytest options
