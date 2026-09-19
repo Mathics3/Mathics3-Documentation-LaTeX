@@ -3,44 +3,17 @@ requires = [
     # setuptools and wheel are needed for pip install --no-build-isolation
     # --no-build-isoolation is used when the API breaks and we need to
     # build from a GitHub repository
-    "setuptools",
-    "wheel",
-    "cython>=0.15.1; implementation_name!='pypy'",
-    # For mathics-generate-json-table
-    "Mathics3_Scanner>=10.0.1",
-    # "packaging" is needed for testing the SymPy Version
-    # in PartionsP
-    "packaging",
-
+    "Mathics3>=10.1",
 ]
 build-backend = "setuptools.build_meta"
 
 [project]
-description = "A general-purpose computer algebra system."
+description = "Mathics3 LaTeX document generation."
 dependencies = [
-    "Mathics3_Scanner>=10.0",
-    "mpmath>=1.2.0",
-    "numpy>=2.4", # Numpy 1.x is definitely no good
-    "palettable",
-    "packaging",
-    # Pillow 9.1.0 supports BigTIFF with big-endian byte order.
-    # ExampleData image hedy.tif is in this format.
-    # Pillow 9.2 handles sunflowers.jpg
-    "pillow >= 9.2",
-    "pint >=0.24", # Earlier pint has problems with numpy 2.2.6
-    "python-dateutil",
-    "python-magic",
-    # Pympler is used in ByteCount[] and MemoryInUse[].
-    "Pympler",
-    "requests",
-    "scipy",
-    "setuptools",
-    # Timed-Threads is needed in TimeRemaining[]
-    "Timed-Threads",
-    "sympy>=1.13",
+    "Mathics3>=10.1",
 ]
 license = "GPL-3.0-or-later"
-name = "Mathics3"
+name = "Mathics3-LaTeX-Documentation"
 requires-python = ">=3.11"
 readme = "README.rst"
 keywords = ["Mathematica", "Wolfram", "Interpreter", "Shell", "Math", "CAS"]
@@ -65,32 +38,7 @@ dynamic = ["version"]
 
 [project.urls]
 Homepage = "https://mathics.org/"
-Downloads = "https://github.com/Mathics3/mathics-core/releases"
-
-[project.optional-dependencies]
-dev = [
-    "check-jsonschema",
-    "pexpect",
-    "pre-commit",
-    "pytest",
-]
-full = [
-    "ipywidgets",
-    "llvmlite",
-    "lxml",
-    "psutil",
-    "pyocr",
-    "scikit-image >= 0.17",
-    "unidecode",
-    "wordcloud >= 1.9.3",
-]
-cython = [
-    "cython",
-]
-gmp2 = [
-    "gmp2", # Faster long integers, and ratios. This is *optional* in SymPy
-]
-
+Downloads = "https://github.com/Mathics3/Mathics3-Documentation-LateX/releases"
 
 [project.scripts]
 mathics = "mathics.__main__:main"
