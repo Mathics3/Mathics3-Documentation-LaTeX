@@ -42,7 +42,6 @@ def test_load_latex_documentation():
     """
 
     documentation = LATEX_DOCUMENTATION
-    breakpoint()
     doc_data = TEST_DOC_DATA_DICT
 
     part = documentation.get_part("manual")

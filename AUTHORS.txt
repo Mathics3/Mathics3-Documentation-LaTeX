@@ -1,4 +1,4 @@
-Mathics was originally created in 2011 by:
+Mathics from which this code was split off from was originally created in 2011 by:
 
 - Jan Pöschko @poeschko
 
@@ -38,16 +38,3 @@ Additional contributions were made by:
 - Tiago Cavalcante Trindade @TiagoCavalcante
 - Li Xiang @Li-Xiang-Ideal
 - Kevin Cao @kejcao
-
-Thanks to the authors of all projects that are used in Mathics:
-- Django
-- MathJax
-- Prototype
-- Python
-- scripaculous
-- colorama
-- SymPy
-- Three.js
-- dateutil
-- colorama
-- six
