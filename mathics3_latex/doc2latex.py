@@ -28,35 +28,38 @@ from PIL import __version__ as PILVersion
 from sympy import __version__ as SymPyVersion
 
 import mathics
-from mathics import __version__, settings, version_info, version_string
+from mathics import __version__, version_info, version_string
 from mathics.core.definitions import Definitions
 from mathics.core.load_builtin import import_and_load_builtins
 from mathics.doc.latex_doc import LaTeXMathicsDocumentation
 from mathics.doc.utils import load_doctest_data, open_ensure_dir
 from mathics.eval.pymathics import PyMathicsLoadException, eval_LoadModule
 
+
 def get_srcdir():
     filename = osp.normcase(osp.dirname(osp.abspath(__file__)))
     return osp.realpath(filename)
 
+
 # Global variables
 logfile = None
 
-# Input doctest PCL FILE. This contains just the
-# tests and test results.
-#
-# This information is stitched in with information comes from
-# docstrings that are loaded from load Mathics3 builtins and external modules.
+ROOT_DATA_DIR: Final[str] = get_srcdir()
 
-DOCTEST_LATEX_DATA_PCL: Final[str] = settings.DOCTEST_LATEX_DATA_PCL
-MATHICS3_LATEX_DIR: Final[str] = get_srcdir()
+# LaTeX Output location information
+DOC_DATA_DIR: Final[str] = os.environ.get("DOC_LATEX_DIR", ROOT_DATA_DIR)
+DOC_LATEX_FILE: Final[str] = os.environ.get(
+    "DOC_LATEX_FILE", osp.join(DOC_DATA_DIR, "documentation.tex"))
 
-# Output location information
-DOC_LATEX_DIR = os.environ.get("DOC_LATEX_DIR", MATHICS3_LATEX_DIR)
-DOC_LATEX_FILE = os.environ.get("DOC_LATEX_FILE", osp.join(DOC_LATEX_DIR, "documentation.tex"))
+# Input PCL file
+DOC_PCL_FILE: Final[str] = os.environ.get("DOC_PCL_FILE",
+                                          osp.join(ROOT_DATA_DIR, "doctest_latex_data.pcl"))
 
 
-def read_doctest_data(quiet=False) -> Optional[dict[tuple, dict]]:
+
+def read_doctest_data(
+    quiet=False, doctest_latex_data_path: str = ""
+) -> Optional[dict[tuple, dict]]:
     """
     Read doctest information from PCL file and return this.
     This is a wrapper around laod_doctest_data().
@@ -64,9 +67,7 @@ def read_doctest_data(quiet=False) -> Optional[dict[tuple, dict]]:
     if not quiet:
         print(f"Extracting internal doctest data for {version_string}")
     try:
-        return load_doctest_data(
-            settings.get_doctest_latex_data_path(should_be_readable=True)
-        )
+        return load_doctest_data(doctest_latex_data_path)
     except KeyboardInterrupt:
         print("\nAborted.\n")
         return None
@@ -116,7 +117,7 @@ def write_latex(
         )
         content = content.encode("utf-8")
         doc.write(content)
-    DOC_VERSION_FILE = osp.join(DOC_LATEX_DIR, "version-info.tex")
+    DOC_VERSION_FILE = osp.join(DOC_DATA_DIR, "version-info.tex")
     if not quiet:
         print(f"Writing Mathics3 Core Version Information to {DOC_VERSION_FILE}")
     with open(DOC_VERSION_FILE, "w") as doc:
@@ -195,7 +196,9 @@ def main():
             else:
                 print(f"Mathics3 Module {module_name} loaded")
 
-    doctest_data = read_doctest_data(quiet=args.quiet)
+    doctest_data = read_doctest_data(
+        quiet=args.quiet, doctest_latex_data_path=DOC_PCL_FILE
+    )
     write_latex(
         doctest_data,
         quiet=args.quiet,

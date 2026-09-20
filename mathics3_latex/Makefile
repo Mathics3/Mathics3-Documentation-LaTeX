@@ -22,7 +22,7 @@ ASY_PDF_FILES := $(ASY_FILES:.asy=.pdf)
 	asy -f pdf $<
 
 # Location of Python Pickle file containing doctest tests and test results formatted for LaTeX
-DOCTEST_LATEX_DATA_PCL ?= $(HOME)/.local/var/Mathics3/doctest_latex_data.pcl
+DOCTEST_LATEX_DATA_PCL ?= doctest_latex_data.pcl
 
 # Variable indicating Mathics3 Modules you have available on your system, in latex2doc option format
 MATHICS3_MODULE_OPTION ?=--load-module pymathics.graph,pymathics.natlang
